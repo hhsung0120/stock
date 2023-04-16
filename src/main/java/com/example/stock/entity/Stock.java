@@ -1,10 +1,7 @@
 package com.example.stock.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Stock {
@@ -15,6 +12,10 @@ public class Stock {
 
     private Long productId;
     private Long quantity;
+
+    //낙관적락에 사용용
+   @Version
+    private Long version;
 
     public Stock() {
     }
