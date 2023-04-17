@@ -36,7 +36,7 @@ class NamedLockStockFacadeTest {
 
     //네임드락
     @Test
-    void 동시에_100개_요청3() throws InterruptedException {
+    void 동시에_100개_요청_마이에스큐엘_네임드락() throws InterruptedException {
         int threadCount = 100;
 
         //비동기로 실행하는 자바 API

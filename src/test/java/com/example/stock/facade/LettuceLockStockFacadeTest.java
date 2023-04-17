@@ -15,10 +15,10 @@ import java.util.concurrent.Executors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class OptimisticLockStockFacadeTest {
+class LettuceLockStockFacadeTest {
 
     @Autowired
-    private OptimisticLockStockFacade optimisticLockStockFacade;
+    private LettuceLockStockFacade lettuceLockStockFacade;
 
     @Autowired
     private StockRepository stockRepository;
@@ -34,23 +34,21 @@ class OptimisticLockStockFacadeTest {
         stockRepository.deleteAll();
     }
 
-    //충돌이 빈번하게 일어나지 않을때 사용, OptimisticLock
-    //실패했을 때 업데이트 로직을 개발자가 직접 짜야함
+    //스핀락은 레디스에 부하가 갈수있음
+    //스레드 슬립으로 락 획득간의 간격을 두어야함
     @Test
-    void 동시에_100개_요청_OptimisticLock() throws InterruptedException {
+    void 동시에_100개_요청_레디스_스핀락() throws Exception {
         int threadCount = 100;
 
-        //비동기로 실행하는 자바 API
         ExecutorService executorService = Executors.newFixedThreadPool(32);
 
-        //다른스레드에서 작업이 완료할때까지 기다려주도록 도와주는 클래스
         CountDownLatch latch = new CountDownLatch(threadCount);
 
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                    optimisticLockStockFacade.decrease(1L, 1L);
-                } catch (InterruptedException e) {
+                    lettuceLockStockFacade.decrease(1L, 1L);
+                } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
                     latch.countDown();
@@ -62,7 +60,7 @@ class OptimisticLockStockFacadeTest {
 
         Stock stock = stockRepository.findById(1L).orElseThrow();
 
-        //레이스 컨디션 발생? 두개이상의 스레드에서 같은 값을 변경할때 생기는 현상
         assertThat(stock.getQuantity()).isEqualTo(0L);
     }
+
 }

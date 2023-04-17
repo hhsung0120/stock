@@ -78,7 +78,7 @@ class StockServiceTest {
 
     //synchronized
     @Test
-    void 동시에_100개_요청2() throws InterruptedException {
+    void 동시에_100개_요청_synchronized() throws InterruptedException {
         int threadCount = 100;
 
         //비동기로 실행하는 자바 API
@@ -108,7 +108,7 @@ class StockServiceTest {
     //PESSIMISTIC_LOCK
     //비관적 락, 충돌이 빈번하다면 낙관적보다 성능이 좋을 수 있음
     @Test
-    void 동시에_100개_요청3() throws InterruptedException {
+    void 동시에_100개_요청_PESSIMISTIC_LOCK() throws InterruptedException {
         int threadCount = 100;
 
         //비동기로 실행하는 자바 API
