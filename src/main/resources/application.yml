@@ -1,9 +1,12 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/datajpa
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    #url: jdbc:h2:tcp://localhost/~/datajpa
+    #username: sa
+    #password:
+    url: jdbc:mysql://localhost:3306/study?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&verifyServerCertificate=false&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       maximum-pool-size: 40
 
@@ -22,7 +25,7 @@ spring:
         max-page-size: 2000
 
   redis:
-    host: localhost
+    host: 127.0.0.1
     port: 6379
 
 logging.level:
