@@ -60,6 +60,6 @@ class NamedLockStockFacadeTest {
         Stock stock = stockRepository.findById(1L).orElseThrow();
 
         //레이스 컨디션 발생? 두개이상의 스레드에서 같은 값을 변경할때 생기는 현상
-        assertThat(stock.getQuantity()).isEqualTo(100L);
+        assertThat(stock.getQuantity()).isEqualTo(0L);
     }
 }
