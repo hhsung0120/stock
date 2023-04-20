@@ -15,10 +15,10 @@ import java.util.concurrent.Executors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class LettuceLockStockFacadeTest {
+class RedissonLockStockFacadeTest {
 
     @Autowired
-    private LettuceLockStockFacade lettuceLockStockFacade;
+    private RedissonLockStockFacade redissonLockStockFacade;
 
     @Autowired
     private StockRepository stockRepository;
@@ -34,10 +34,10 @@ class LettuceLockStockFacadeTest {
         stockRepository.deleteAll();
     }
 
-    //스핀락은 레디스에 부하가 갈수있음
-    //스레드 슬립으로 락 획득간의 간격을 두어야함
+    //레디슨락은 펍섭 기반이라 부하가 적다
+    //레디스에 비해 구현이 복잡하고 별도의 라이브러리가 필요하다.
     @Test
-    void 동시에_100개_요청_레디스_스핀락() throws Exception {
+    void 동시에_100개_요청_레디슨_펍섭() throws Exception {
         int threadCount = 100;
 
         ExecutorService executorService = Executors.newFixedThreadPool(32);
@@ -47,7 +47,7 @@ class LettuceLockStockFacadeTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                    lettuceLockStockFacade.decrease(1L, 1L);
+                    redissonLockStockFacade.decrease(1L, 1L);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
